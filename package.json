@@ -4,7 +4,7 @@
     "description": "A extension for using MobX in Flutter",
     "version": "0.0.1",
     "publisher": "Flutterando",
-    "icon": "mobx.png",
+    "icon": "https://raw.githubusercontent.com/Flutterando/flutter_mobx_extension/master/mobx.png",
     "repository": "https://github.com/Flutterando/flutter_mobx_extension",
     "engines": {
         "vscode": "^1.41.0"
