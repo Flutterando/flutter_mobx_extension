@@ -1,22 +1,24 @@
 {
-    "MobX Store": {
+	"MobX Store": {
 		"prefix": "mobx",
 		"body": [
 			"import 'package:mobx/mobx.dart';",
-			"part '${TM_FILENAME_BASE}.g.dart';",
+			"part '${TM_FILENAME_BASE/(.*)/${1:/downcase}/}.g.dart';",
 			"",
 			"class $1 = _$1Base with _$$1;",
 			"",
-			"abstract class _$1Base with Store {}"
+			"abstract class _$1Base with Store {",
+			"\t${0}",
+			"}"
 		],
 		"description": "Create MobX Store"
-    },
-    "MobX Observer": {
+	},
+	"MobX Observer": {
 		"prefix": "obs",
 		"body": [
 			"Observer(builder: (_) {",
-			"   return Container();",
-			  "},",
+			"   return Container(${0});",
+			"},",
 			")"
 		],
 		"description": "Create Widget Observer"
