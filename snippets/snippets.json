@@ -8,6 +8,9 @@
 			"class $1 = _$1Base with _$$1;",
 			"",
 			"abstract class _$1Base with Store {",
+			"@observable",
+			"",
+			"@action",
 			"\t${0}",
 			"}"
 		],
