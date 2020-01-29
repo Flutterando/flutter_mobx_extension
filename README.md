@@ -2,7 +2,7 @@
 
 Mobx Snnipets on Flutter
 
-![Alt Text](mobx.gif)
+![Alt Text](https://github.com/Flutterando/flutter_mobx_extension/raw/master/mobx.gif)
 
 ## Features
 
