@@ -1,6 +1,8 @@
-# flutter-mobx README
+# flutter-mobx
 
 Mobx Snnipets on Flutter
+
+![Alt Text](mobx.gif)
 
 ## Features
 

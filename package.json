@@ -2,7 +2,7 @@
     "name": "flutter-mobx",
     "displayName": "flutter_mobx",
     "description": "A extension for using MobX in Flutter",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "publisher": "Flutterando",
     "icon": "mobx.png",
     "repository": "https://github.com/Flutterando/flutter_mobx_extension",
@@ -10,14 +10,55 @@
         "vscode": "^1.41.0"
     },
     "categories": [
-        "Snippets"
+        "Snippets",
+        "Other"
     ],
+    "activationEvents": [
+        "workspaceContains:pubspec.yaml"
+    ],
+    "main": "./out/extension.js",
     "contributes": {
         "snippets": [
             {
                 "language": "dart",
                 "path": "./snippets/snippets.json"
             }
+        ],
+        "commands": [
+            {
+                "command": "flutterMobx.extension.wrapObserver",
+                "title": "Wrap with Observer"
+            }
         ]
+    },
+    "menus": {
+        "explorer/context": [],
+        "commandPalette": [
+          {
+            "command": "flutterMobx.extension.wrapObserver",
+            "when": "editorLangId == dart"
+          }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile",
+        "test": "node ./out/test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/glob": "^7.1.1",
+        "@types/mocha": "^5.2.7",
+        "@types/node": "^12.11.7",
+        "@types/vscode": "^1.41.0",
+        "glob": "^7.1.5",
+        "mocha": "^6.2.2",
+        "typescript": "^3.6.4",
+        "tslint": "^5.20.0",
+        "vscode-test": "^1.2.2"
+    },
+    "dependencies": {
+        "child_process": "^1.0.2"
     }
 }
