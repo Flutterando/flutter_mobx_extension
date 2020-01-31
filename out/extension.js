@@ -14,9 +14,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
 exports.nextElementIsValid = (code, length) => {
     for (let index = 0; index < 1000; index++) {
-        const text = code.charAt(length);
-        if (text !== '') {
-            if (/[;),]/.test(text)) {
+        const text = code.charAt(length).trim();
+        if (text) {
+            if (/[;),\]]/.test(text)) {
                 return true;
             }
             else {

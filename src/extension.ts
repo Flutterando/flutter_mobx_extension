@@ -5,9 +5,9 @@ import * as vscode from 'vscode';
 export const nextElementIsValid = (code: string, length: number): Boolean => {
   for (let index = 0; index < 1000; index++) {
     
-    const text = code.charAt(length);
-    if (text !== '') {
-      if (/[;),]/.test(text)) {
+    const text = code.charAt(length).trim();
+    if (text) {
+      if (/[;),\]]/.test(text)) {
         return true;
       } else {
         return false;
