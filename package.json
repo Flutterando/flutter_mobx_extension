@@ -28,16 +28,20 @@
             {
                 "command": "flutterMobx.extension.wrapObserver",
                 "title": "Wrap with Observer"
+            },
+            {
+                "command": "flutterMobx.extension.BuildRunnerWatch",
+                "title": "Build Runner Watch"
             }
         ]
     },
     "menus": {
         "explorer/context": [],
         "commandPalette": [
-          {
-            "command": "flutterMobx.extension.wrapObserver",
-            "when": "editorLangId == dart"
-          }
+            {
+                "command": "flutterMobx.extension.wrapObserver",
+                "when": "editorLangId == dart"
+            }
         ]
     },
     "scripts": {
@@ -59,6 +63,7 @@
         "vscode-test": "^1.2.2"
     },
     "dependencies": {
-        "child_process": "^1.0.2"
+        "child_process": "^1.0.2",
+        "elegant-spinner": "^2.0.0"
     }
 }

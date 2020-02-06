@@ -1,10 +1,13 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import cp = require('child_process');
+import elegantSpinner = require('elegant-spinner');
 
+let myStatusBarItem: vscode.StatusBarItem;
 export const nextElementIsValid = (code: string, length: number): Boolean => {
   for (let index = 0; index < 1000; index++) {
-    
+
     const text = code.charAt(length).trim();
     if (text) {
       if (/[;),\]]/.test(text)) {
@@ -14,7 +17,7 @@ export const nextElementIsValid = (code: string, length: number): Boolean => {
       }
     }
     length++;
-   
+
   }
   return false;
 
@@ -94,7 +97,10 @@ export class CodeActionProvider implements vscode.CodeActionProvider {
   }
 }
 
+const isActivityBuildRunner: boolean = false;
+
 export function activate(context: vscode.ExtensionContext) {
+
 
   context.subscriptions.push(
     vscode.languages.registerCodeActionsProvider(
@@ -120,6 +126,108 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   context.subscriptions.push(disposableWrapObserver);
+
+  const myCommandId = 'flutterMobx.extension.BuildRunnerWatch';
+
+  // create a new status bar item that we can now manage
+  myStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 200);
+  myStatusBarItem.command = myCommandId;
+  context.subscriptions.push(myStatusBarItem);
+  var child: any;
+
+
+  let disposableBuildRunnerWatch = vscode.commands.registerCommand(myCommandId, async () => {
+    if (child == null) {
+      try {
+        updateButton(TypeButton.loading);
+        var cleanChild = cp.exec('flutter pub run build_runner clean', { cwd: vscode.workspace.rootPath });
+        await promiseFromChildProcess(cleanChild);
+
+      } catch (e) {
+        updateButton(TypeButton.watch);
+      }
+      child = cp.spawn('flutter pub run build_runner watch', [], {
+        windowsVerbatimArguments: true,
+        cwd: vscode.workspace.rootPath,
+        shell: true
+      });
+
+      child.addListener('close', (err: any) => {
+        console.log(`close: ${err}`);
+        updateButton(TypeButton.watch);
+        if(err == 0){
+          vscode.window.showInformationMessage('build_runner finish');
+        } else {
+          throw 'build_runner error';
+        }
+      });
+      child.addListener('error', (err: any) => {
+        console.log(`error: ${err}`);
+        updateButton(TypeButton.watch);
+      });
+
+
+      child.stdout.on('data', (data: any) => {
+        console.log(`stdout: ${data}`);
+        if ((data as string).indexOf('Succeeded after') != -1) {
+          updateButton(TypeButton.unwatch);
+        } else {
+          updateButton(TypeButton.loading);
+        }
+      });
+      child.stderr.on('data', (data: any) => {
+        console.log(`stderr: ${data}`);
+      });
+
+    } else {
+      console.log('destroy');
+      (child as cp.ChildProcessWithoutNullStreams).removeAllListeners();
+      (child as cp.ChildProcessWithoutNullStreams).kill();
+      child = null;
+      updateButton(TypeButton.watch);
+    }
+
+  });
+
+  updateButton(TypeButton.watch);
+  myStatusBarItem.show();
+  context.subscriptions.push(disposableBuildRunnerWatch);
 }
+
+function promiseFromChildProcess(child: any) {
+  return new Promise(function (resolve, reject) {
+    child.addListener("error", reject);
+    child.addListener("exit", resolve);
+  });
+}
+
+
+function updateButton(type: TypeButton) {
+  if (prevNowPlaying && type != TypeButton.loading) {
+    clearInterval(prevNowPlaying);
+    prevNowPlaying = null;
+  }
+
+  if (type == TypeButton.watch) {
+    myStatusBarItem.text = `$(file-binary) build_runner watch`;
+  } else if (type == TypeButton.unwatch) {
+    myStatusBarItem.text = `$(file-binary) build_runner unwatch`;
+  } else if (type == TypeButton.loading) {
+    if (!prevNowPlaying) {
+      myStatusBarItem.text = `${frame()} build_runner unwatch`;
+      prevNowPlaying = setInterval(() => {
+        myStatusBarItem.text = `${frame()} build_runner unwatch`;
+      }, 500);
+    }
+  }
+}
+var prevNowPlaying: any = null;
+const frame = elegantSpinner();
+enum TypeButton {
+  loading, watch, unwatch
+}
+
+
+
 
 export function deactivate() { }
