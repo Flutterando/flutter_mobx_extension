@@ -2,7 +2,7 @@
     "name": "flutter-mobx",
     "displayName": "flutter_mobx",
     "description": "A extension for using MobX in Flutter",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "publisher": "Flutterando",
     "icon": "mobx.png",
     "repository": "https://github.com/Flutterando/flutter_mobx_extension",
