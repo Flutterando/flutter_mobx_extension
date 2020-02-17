@@ -33,5 +33,29 @@
 			""
 		],
 		"description": "Create MobX Getter Setter"
-	}
+	},
+	"MobX Model": {
+		"prefix": "mobxm",
+		"body": [
+			"import 'package:mobx/mobx.dart';",
+			"import 'package:json_annotation/json_annotation.dart';",
+			"",
+			"part '${TM_FILENAME_BASE/(.*)/${1:/downcase}/}.g.dart';",
+			"",
+			"@JsonSerializable()",
+			"class $1 extends _$1Base with _$$1 {",
+			"",
+			"$1();",
+			"",
+			"factory $1.fromJson(Map<String, dynamic> json) => _$$1FromJson(json);",
+			"Map<String, dynamic> toJson() => _$$1ToJson(this);",
+			"",
+			"}",
+			"",
+			"abstract class _$1Base with Store {",
+			"\t${0}",
+			"}"
+		],
+		"description": "Create model with MobX Store and JsonSerializable"
+	}	
 }

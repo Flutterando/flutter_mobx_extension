@@ -9,11 +9,14 @@ Mobx Snnipets and tools to Flutter
 ## Snippets
 
 **mobx** : Create an MobX Store <br>
-**obs** : Create a Widget Observer() <br>
-**obx** : Create a Getter and Setter <br>
+**mobxm** : Create model with MobX Store and JsonSerializable <br>
+**obs**  : Create a Widget Observer() <br>
+**obx**  : Create a Getter and Setter <br>
+
 
 ## Refactor
 
 ![Alt Text](https://github.com/Flutterando/flutter_mobx_extension/raw/master/mobx.gif)
+
 
 
