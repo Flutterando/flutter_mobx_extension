@@ -7,7 +7,6 @@ import elegantSpinner = require('elegant-spinner');
 let myStatusBarItem: vscode.StatusBarItem;
 export const nextElementIsValid = (code: string, length: number): Boolean => {
   for (let index = 0; index < 1000; index++) {
-
     const text = code.charAt(length).trim();
     if (text) {
       if (/[;),\]]/.test(text)) {
@@ -97,7 +96,6 @@ export class CodeActionProvider implements vscode.CodeActionProvider {
   }
 }
 
-const isActivityBuildRunner: boolean = false;
 
 export function activate(context: vscode.ExtensionContext) {
 
@@ -138,15 +136,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   let disposableBuildRunnerWatch = vscode.commands.registerCommand(myCommandId, async () => {
     if (child == null) {
-      try {
-        updateButton(TypeButton.loading);
-        var cleanChild = cp.exec('flutter pub run build_runner clean', { cwd: vscode.workspace.rootPath });
-        await promiseFromChildProcess(cleanChild);
-
-      } catch (e) {
-        updateButton(TypeButton.watch);
-      }
-      child = cp.spawn('flutter pub run build_runner watch', [], {
+      child = cp.spawn('flutter pub run build_runner watch --delete-conflicting-outputs', [], {
         windowsVerbatimArguments: true,
         cwd: vscode.workspace.rootPath,
         shell: true
@@ -193,14 +183,6 @@ export function activate(context: vscode.ExtensionContext) {
   myStatusBarItem.show();
   context.subscriptions.push(disposableBuildRunnerWatch);
 }
-
-function promiseFromChildProcess(child: any) {
-  return new Promise(function (resolve, reject) {
-    child.addListener("error", reject);
-    child.addListener("exit", resolve);
-  });
-}
-
 
 function updateButton(type: TypeButton) {
   if (prevNowPlaying && type != TypeButton.loading) {

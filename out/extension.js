@@ -96,7 +96,6 @@ class CodeActionProvider {
     }
 }
 exports.CodeActionProvider = CodeActionProvider;
-const isActivityBuildRunner = false;
 function activate(context) {
     context.subscriptions.push(vscode.languages.registerCodeActionsProvider({ pattern: "**/*.{dart,dartx}", scheme: "file" }, new CodeActionProvider()));
     let disposableWrapObserver = vscode.commands.registerCommand('flutterMobx.extension.wrapObserver', () => __awaiter(this, void 0, void 0, function* () {
@@ -121,15 +120,7 @@ function activate(context) {
     var child;
     let disposableBuildRunnerWatch = vscode.commands.registerCommand(myCommandId, () => __awaiter(this, void 0, void 0, function* () {
         if (child == null) {
-            try {
-                updateButton(TypeButton.loading);
-                var cleanChild = cp.exec('flutter pub run build_runner clean', { cwd: vscode.workspace.rootPath });
-                yield promiseFromChildProcess(cleanChild);
-            }
-            catch (e) {
-                updateButton(TypeButton.watch);
-            }
-            child = cp.spawn('flutter pub run build_runner watch', [], {
+            child = cp.spawn('flutter pub run build_runner watch --delete-conflicting-outputs', [], {
                 windowsVerbatimArguments: true,
                 cwd: vscode.workspace.rootPath,
                 shell: true
@@ -174,12 +165,6 @@ function activate(context) {
     context.subscriptions.push(disposableBuildRunnerWatch);
 }
 exports.activate = activate;
-function promiseFromChildProcess(child) {
-    return new Promise(function (resolve, reject) {
-        child.addListener("error", reject);
-        child.addListener("exit", resolve);
-    });
-}
 function updateButton(type) {
     if (prevNowPlaying && type != TypeButton.loading) {
         clearInterval(prevNowPlaying);
