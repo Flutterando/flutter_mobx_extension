@@ -27,9 +27,9 @@
 		"prefix": "obx",
 		"body": [
 			"@observable",
-			"$1 $2;",
+			"$1 $2 = $3;",
 			"@action",
-			"set${2/(.*)/${1:/captalize}/}($1 value) => $2 = value;",
+			"set${2/(.*)/${1:/capitalize}/}($1 value) => $2 = value;",
 			""
 		],
 		"description": "Create MobX Getter Setter"
@@ -57,5 +57,5 @@
 			"}"
 		],
 		"description": "Create model with MobX Store and JsonSerializable"
-	}	
+	}
 }
